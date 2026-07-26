@@ -6,6 +6,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
 
-COPY . .
+COPY src/ ./src/
+
+USER node
 
 CMD ["node", "src/server.js"]

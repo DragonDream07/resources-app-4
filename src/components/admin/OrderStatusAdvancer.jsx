@@ -12,7 +12,13 @@ const STATUS_TRANSITIONS = {
 
 const ALLOWED_ROLES = ['admin', 'superadmin'];
 
-const OrderStatusAdvancer = ({ orderId, currentStatus, userRole, onAdvance, loading }) => {
+const OrderStatusAdvancer = ({
+  orderId,
+  currentStatus,
+  userRole,
+  onAdvance,
+  loading = false,
+}) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [error, setError] = useState('');
 
@@ -98,10 +104,6 @@ OrderStatusAdvancer.propTypes = {
   userRole: PropTypes.string.isRequired,
   onAdvance: PropTypes.func.isRequired,
   loading: PropTypes.bool,
-};
-
-OrderStatusAdvancer.defaultProps = {
-  loading: false,
 };
 
 export default OrderStatusAdvancer;

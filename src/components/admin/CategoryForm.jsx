@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const CategoryForm = ({ initialValues, allCategories, onSubmit, loading, submitLabel }) => {
+const CategoryForm = ({
+  initialValues = null,
+  allCategories = [],
+  onSubmit,
+  loading = false,
+  submitLabel = 'Save Category',
+}) => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [parentId, setParentId] = useState('');
@@ -123,7 +129,7 @@ const CategoryForm = ({ initialValues, allCategories, onSubmit, loading, submitL
           disabled={loading}
           className="px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {loading ? 'Saving…' : (submitLabel || 'Save Category')}
+          {loading ? 'Saving…' : submitLabel}
         </button>
       </div>
     </form>
@@ -138,13 +144,6 @@ CategoryForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   submitLabel: PropTypes.string,
-};
-
-CategoryForm.defaultProps = {
-  initialValues: null,
-  allCategories: [],
-  loading: false,
-  submitLabel: 'Save Category',
 };
 
 export default CategoryForm;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // ---------------------------------------------------------------------------
@@ -35,7 +35,8 @@ function AuthProvider({ children }) {
     localStorage.removeItem('token');
   }, []);
 
-  const value = { user, token, login, logout, isAuthenticated: !!token };
+  const isAuthenticated = !!token;
+  const value = { user, token, login, logout, isAuthenticated };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -57,7 +58,8 @@ function CartProvider({ children }) {
   const setCart = useCallback((id, items = []) => {
     setCartId(id);
     setCartItems(items);
-    setCartCount(items.reduce((sum, item) => sum + (item.quantity || 0), 0));
+    const totalCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    setCartCount(totalCount);
     if (id) {
       localStorage.setItem('cartId', id);
     } else {
@@ -106,7 +108,10 @@ function NotificationsProvider({ children }) {
     setNotifications((prev) =>
       prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
     );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
+    setUnreadCount((prev) => {
+      const next = prev - 1;
+      return next > 0 ? next : 0;
+    });
   }, []);
 
   const setAllNotifications = useCallback((list) => {

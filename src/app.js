@@ -24,12 +24,14 @@ const returnsRoutes = require('./modules/returns/returns.routes');
 const notificationsRoutes = require('./modules/notifications/notifications.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
 function createApp() {
   const app = express();
 
   // Security middleware
   app.use(helmet());
-  app.use(cors());
+  app.use(cors({ origin: CORS_ORIGIN }));
   app.use(compression());
 
   // Body parsing middleware

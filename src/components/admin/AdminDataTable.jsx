@@ -14,12 +14,12 @@ SortIcon.propTypes = { direction: PropTypes.string };
 
 const AdminDataTable = ({
   columns,
-  data,
-  pageSize,
-  loading,
-  emptyMessage,
-  onRowClick,
-  keyField,
+  data = [],
+  pageSize = 20,
+  loading = false,
+  emptyMessage = 'No records found.',
+  onRowClick = null,
+  keyField = 'id',
 }) => {
   const [sortKey, setSortKey] = useState(null);
   const [sortDir, setSortDir] = useState('asc');
@@ -57,6 +57,12 @@ const AdminDataTable = ({
   const goToPage = (p) => {
     if (p < 1 || p > totalPages) return;
     setPage(p);
+  };
+
+  const renderCellContent = (col, row) => {
+    if (col.render) return col.render(row[col.key], row);
+    const val = row[col.key];
+    return val != null ? val : '—';
   };
 
   return (
@@ -137,7 +143,7 @@ const AdminDataTable = ({
                 >
                   {columns.map((col) => (
                     <td key={col.key} className="px-4 py-3 text-gray-800">
-                      {col.render ? col.render(row[col.key], row) : row[col.key] ?? '—'}
+                      {renderCellContent(col, row)}
                     </td>
                   ))}
                 </tr>
@@ -227,15 +233,6 @@ AdminDataTable.propTypes = {
   emptyMessage: PropTypes.string,
   onRowClick: PropTypes.func,
   keyField: PropTypes.string,
-};
-
-AdminDataTable.defaultProps = {
-  data: [],
-  pageSize: 20,
-  loading: false,
-  emptyMessage: 'No records found.',
-  onRowClick: null,
-  keyField: 'id',
 };
 
 export default AdminDataTable;
